@@ -1,6 +1,9 @@
 class Admin::CoursesController < ApplicationController
+  before_action :check_admin_user, only: [:create, :destroy, :new]
+
   def new
     @course = Course.new
+    user = @course.users.build
   end
 
   def index
@@ -9,6 +12,7 @@ class Admin::CoursesController < ApplicationController
 
   def show
     @course = Course.find params[:id]
+    @users = @course.users.paginate page: params[:page]
   end
 
   def create
@@ -22,7 +26,19 @@ class Admin::CoursesController < ApplicationController
   end
 
   private
+  def set_course
+    @course = Course.find params[:id]
+  end
+
+  private
   def course_params
     params.require(:course).permit(:name, :description, :begin_at, :end_at)
+  end
+
+  def check_admin_user
+    if !current_user || (current_user && !current_user.admin?)
+      flash[:danger] = 'You are not'
+      redirect_to root_path
+    end
   end
 end

@@ -10,7 +10,14 @@
   <h2>
     From trimalo team!
   </h2>
-  <% if !logged_in? %>
-    <%= link_to "Sign up now!", signup_path, class: "btn btn-lg btn-primary" %>
+  <%= link_to "Sign up now!", signup_path, class: "btn btn-lg btn-primary" %>
+  <% if logged_in? %>
+    <div class="row" >
+      <aside class="col-md-4" >
+        <section class="stats" >
+          <%= render 'shared/stats' %>
+        </section>
+      </aside>
+    </div>
   <% end %>
 </div>

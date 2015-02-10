@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :subjects
 
   root             'static_pages#home'
   get 'help'    => 'static_pages#help'
@@ -9,8 +8,19 @@ Rails.application.routes.draw do
   get    'login'   => 'sessions#new'
   post   'login'   => 'sessions#create'
   delete 'logout'  => 'sessions#destroy'
-  resources :users
+
+  resources :subjects
   namespace :admin do
-    resources :users, :courses
+    resources :users
+    resources :courses do
+      member do
+        get :trainees
+      end
+    end
+  end
+  resources :users do
+    member do
+      get :trainings
+    end
   end
 end

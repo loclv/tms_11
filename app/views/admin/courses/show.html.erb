@@ -3,6 +3,9 @@
 <div class="row">
   <h1>
     Course: <%= @course.name %>
+    <% @course.user_courses.each do |user_course| %>
+      <%= user_course.user.try(:id) %>
+    <% end %>
   </h1>
 
   <h4>

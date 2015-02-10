@@ -1,6 +1,11 @@
 class Course < ActiveRecord::Base
-  validates :name,  presence: true, length: { maximum: 64 }
-  validates :description, presence: true, length: { maximum: 512 }
+  has_many :user_courses
+  has_many :users, through: :user_courses
+
+  accepts_nested_attributes_for :users, reject_if: {|attr| attr[:name].blank?},
+                                                            allow_destroy: true
+  validates :name, presence: true, length: {maximum: 64}
+  validates :description, presence: true, length: {maximum: 512}
   validates :begin_at, presence: true
   validates :end_at, presence: true
 
