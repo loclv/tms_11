@@ -1,6 +1,6 @@
 class Course < ActiveRecord::Base
-  validates :name,  presence: true, length: { maximum: 64 }
-  validates :description, presence: true, length: { maximum: 512 }
+  validates :name,  presence: true, length: {maximum: 64}
+  validates :description, presence: true, length: {maximum: 512}
   validates :begin_at, presence: true
   validates :end_at, presence: true
 
@@ -10,6 +10,9 @@ class Course < ActiveRecord::Base
   has_many :course_subjects
   has_many :subjects, through: :course_subjects
   accepts_nested_attributes_for :course_subjects, allow_destroy: true
+
+  has_many :course_users, dependent: :destroy
+  has_many :users, through: :course_users
 
   def end_at_must_greater_than_or_equal_to_begin_at
     if end_at < begin_at
