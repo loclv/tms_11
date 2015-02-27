@@ -1,0 +1,75 @@
+<% if !current_user.courses.blank? %>
+  <% current_user.courses.each do |course| %>
+
+    <div class="row" >
+      <h1>Course: <%= course.name %></h1>
+      <h2 class="green">Begin: <%= course.begin_at %></h2>
+      <h2 class="red" >End:<%= course.end_at %></h2>
+      <h3>Subject</h3>
+      <% course.subjects.each do |subject| %>
+
+        <table class="table">
+          <tr>
+            <td><h3><%= subject.name %></h3></td>
+            <td>
+              <% subject.user_subjects.each do |us| %>
+                <% if us.status == 0 %>
+                  <h2 class = 'new_subject_info' >this is a new subject</h2>
+                  <td>
+                    <br>
+                    <button class = 'btn btn-primary finish'
+                            data-id = <%= us.id %> >
+                      finish now
+                    </button>
+                    <button class = "btn btn-info" id = "show" >
+                      show
+                    </button>
+                    <button class = "btn btn-info" id = "hide" >
+                      hide
+                    </button>
+                  </td>
+                  <br>
+                <% elsif us.status == 1 %>
+                  <h2 >subject is finished</h2>
+                <% end %>
+              <% end %>
+            </td>
+          </tr>
+        </table>
+
+        <% subject.tasks.each do |task| %>
+
+          <p>
+            <% if subject.tasks.any? %>
+              Task
+              <table class="table">
+                <tr>
+                  <td><li><%= task.name %></li></td>
+                  <td>
+                    <% task.user_tasks.each do |ut| %>
+                      <% if ut.status == 0 %>
+                        <h2 class = 'task_info' >this is a new task</h2>
+                        <td>
+                          <button class = 'btn btn-success done_button'
+                                data-id = <%= task.id %> >
+                            done
+                          </button>
+                        </td>
+                      <% elsif ut.status == 1 %>
+                        <h2 >task is done</h2>
+                      <% end %>
+                    <% end %>
+                  </td>
+                </tr>
+              </table>
+            <% end %>
+          </p>
+
+        <% end %>
+
+      <% end %>
+    </div>
+  <% end %>
+<% else %>
+  <h3>You haven't received any course!</h3>
+<% end %>

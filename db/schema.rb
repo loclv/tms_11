@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150303011635) do
+ActiveRecord::Schema.define(version: 20150227080322) do
 
   create_table "assignments", force: true do |t|
     t.integer  "course_id"
@@ -55,10 +55,12 @@ ActiveRecord::Schema.define(version: 20150303011635) do
     t.datetime "updated_at", null: false
   end
 
+  add_index "tasks", ["subject_id"], name: "index_tasks_on_subject_id", using: :btree
+
   create_table "user_subjects", force: true do |t|
     t.integer  "user_id"
     t.integer  "subject_id"
-    t.boolean  "status"
+    t.integer  "status"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -70,10 +72,14 @@ ActiveRecord::Schema.define(version: 20150303011635) do
   create_table "user_tasks", force: true do |t|
     t.integer  "user_id"
     t.integer  "task_id"
-    t.boolean  "status"
+    t.integer  "status"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "user_tasks", ["task_id", "user_id"], name: "index_user_tasks_on_task_id_and_user_id", unique: true, using: :btree
+  add_index "user_tasks", ["task_id"], name: "index_user_tasks_on_task_id", using: :btree
+  add_index "user_tasks", ["user_id"], name: "index_user_tasks_on_user_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "name"

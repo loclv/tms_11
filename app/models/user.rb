@@ -19,6 +19,12 @@ class User < ActiveRecord::Base
   accepts_nested_attributes_for :subjects, allow_destroy: true
   accepts_nested_attributes_for :tasks, allow_destroy: true
 
+  has_many :user_subjects, dependent: :destroy
+  has_many :subjects, through: :user_subjects
+
+  has_many :user_tasks, dependent: :destroy
+  has_many :tasks, through: :user_tasks
+
   def User.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
                                                   BCrypt::Engine.cost
@@ -42,7 +48,7 @@ class User < ActiveRecord::Base
   def forget
     update_attributes! remember_digest: nil
   end
-  
+
   scope :is_admin, ->{where(admin: true)}
   scope :free_user, ->{includes(:assignments).where(assignments: {user_id: nil})} 
   scope :in_course, ->(course) {includes(:assignments)

@@ -6,9 +6,9 @@ class Subject < ActiveRecord::Base
 
   has_many :user_subjects, dependent: :destroy
   has_many :users, through: :user_subjects
-  
+
   validates :name, presence: true, length: {maximum: 50}, uniqueness:true
-  
+
   accepts_nested_attributes_for :tasks, reject_if: proc {|attributes| attributes[:name].blank?}, 
                                         allow_destroy: true
   accepts_nested_attributes_for :users, allow_destroy: true

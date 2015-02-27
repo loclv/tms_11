@@ -7,8 +7,7 @@ class SubjectsController < ApplicationController
 
   def show
     @subject = Subject.find params[:id]
-    
-  end  
+  end
 
   private
   def logged_in_user

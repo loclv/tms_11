@@ -1,9 +1,10 @@
 Rails.application.routes.draw do
+
+  get 'user_subjects/create'
+  get 'user_subjects/update'
+  get 'user_subjects/destroy'
   get 'subjects/show'
 
-  namespace :admin do
-  get 'assignments/new'
-  end
   get 'assign/new'
   get 'assign/update'
   get 'assign/destroy'
@@ -21,11 +22,17 @@ Rails.application.routes.draw do
   resources :subjects
   resources :users do
     resources :courses, only: [:index, :show]
+    resources :user_subjects
+    resources :user_tasks
+    resources :reports
   end
+  resources :user_subjects
+  resources :user_tasks
   resources :courses do
     resources :users, only: [:index]
   end
   namespace :admin do
+    get 'assignments/new'
     resources :users
     resources :courses do
       resources :assignments
